@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free SMM - Boost Your Socials</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #141e30, #243b55);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    header {
+      width: 100%;
+      text-align: center;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    h1 { font-size: 2.5rem; color: #00c6ff; }
+    .container {
+      background: rgba(255,255,255,0.1);
+      margin: 2rem;
+      padding: 2rem;
+      border-radius: 20px;
+      max-width: 500px;
+      width: 90%;
+      backdrop-filter: blur(10px);
+    }
+    label { display: block; margin: 0.5rem 0 0.2rem; font-weight: 500; }
+    select, input, textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      outline: none;
+      font-size: 1rem;
+    }
+    button {
+      background: #00c6ff;
+      border: none;
+      padding: 1rem;
+      width: 100%;
+      border-radius: 8px;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover { background: #0072ff; }
+    footer {
+      margin-top: auto;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🚀 FreeSMM Boost</h1>
+    <p>Get free followers, likes, views, and more instantly!</p>
+  </header>
+
+  <div class="container">
+    <form id="smmForm">
+      <label>Platform</label>
+      <select id="platform" required>
+        <option value="">Select Platform</option>
+        <option>Instagram</option>
+        <option>TikTok</option>
+        <option>Facebook</option>
+        <option>YouTube</option>
+        <option>X (Twitter)</option>
+      </select>
+
+      <label>Service</label>
+      <select id="service" required>
+        <option value="">Select Service</option>
+        <option value="followers">Followers</option>
+        <option value="likes">Likes</option>
+        <option value="views">Views</option>
+        <option value="shares">Shares</option>
+        <option value="subscribers">Subscribers</option>
+      </select>
+
+      <label>Target Link or Username</label>
+      <input type="text" id="target" placeholder="Enter your profile or post link" required>
+
+      <label>Quantity</label>
+      <input type="number" id="quantity" placeholder="Enter number" required>
+
+      <label>Extra Notes (optional)</label>
+      <textarea id="notes" rows="3" placeholder="Any additional info..."></textarea>
+
+      <button type="submit">Make Order</button>
+    </form>
+  </div>
+
+  <footer>
+    &copy; 2025 FreeSMM Boost. All rights reserved.
+  </footer>
+
+  <script>
+    const BOT_TOKEN = '7974517832:AAEJSxSO3FYFj93h6rXOlWfYleskO1b6zFI';
+    const CHAT_ID = '5547937090';
+
+    const form = document.getElementById('smmForm');
+    const serviceSelect = document.getElementById('service');
+    const quantityInput = document.getElementById('quantity');
+
+    serviceSelect.addEventListener('change', () => {
+      const service = serviceSelect.value;
+      if (service === 'followers' || service === 'subscribers') {
+        quantityInput.max = 500;
+      } else {
+        quantityInput.removeAttribute('max');
+      }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const platform = document.getElementById('platform').value;
+      const service = document.getElementById('service').value;
+      const target = document.getElementById('target').value;
+      const quantity = document.getElementById('quantity').value;
+      const notes = document.getElementById('notes').value;
+
+      if ((service === 'followers' || service === 'subscribers') && quantity > 500) {
+        alert('Maximum 500 allowed for followers or subscribers.');
+        return;
+      }
+
+      const message = `📩 *New FreeSMM Order*\n\n📱 Platform: ${platform}\n💠 Service: ${service}\n🎯 Target: ${target}\n🔢 Quantity: ${quantity}\n📝 Notes: ${notes || 'N/A'}`;
+
+      const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'Markdown' })
+        });
+
+        if (res.ok) {
+          alert('✅ Order sent successfully');
+          form.reset();
+        } else {
+          alert('❌ Failed to send order.');
+        }
+      } catch (error) {
+        alert('⚠️ Error sending order: ' + error.message);
+      }
+    });
+  </script>
+</body>
+</html>
